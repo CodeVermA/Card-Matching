@@ -4,11 +4,8 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="5eb23c6e-3d02-4844-ba81-f8fb5e81205b" name="Changes" comment="">
+    <list default="true" id="5eb23c6e-3d02-4844-ba81-f8fb5e81205b" name="Changes" comment="Card Extraction added">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/2025-02-03-151229.jpg" beforeDir="false" afterPath="$PROJECT_DIR$/resources/playingcards.jpg" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/20250203_152253.jpg" beforeDir="false" afterPath="$PROJECT_DIR$/resources/textcards.jpg" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/main.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/robot.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/robot.py" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
@@ -26,6 +23,18 @@
   <component name="Git.Settings">
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
   </component>
+  <component name="GitHubPullRequestSearchHistory">{
+  &quot;lastFilter&quot;: {
+    &quot;state&quot;: &quot;OPEN&quot;,
+    &quot;assignee&quot;: &quot;CodeVermA&quot;
+  }
+}</component>
+  <component name="GithubPullRequestsUISettings">{
+  &quot;selectedUrlAndAccountId&quot;: {
+    &quot;url&quot;: &quot;https://github.com/CodeVermA/Card-Matching&quot;,
+    &quot;accountId&quot;: &quot;bad37bf3-243d-42f6-883a-e5ffa01ef442&quot;
+  }
+}</component>
   <component name="ProjectColorInfo">{
   &quot;associatedIndex&quot;: 0
 }</component>
@@ -98,14 +107,28 @@
       <option name="presentableId" value="Default" />
       <updated>1738599042995</updated>
       <workItem from="1738599052105" duration="356000" />
-      <workItem from="1738768882987" duration="1521000" />
+      <workItem from="1738768882987" duration="4775000" />
+      <workItem from="1738849376451" duration="1316000" />
     </task>
+    <task id="LOCAL-00001" summary="Card Extraction added">
+      <option name="closed" value="true" />
+      <created>1738770822203</created>
+      <option name="number" value="00001" />
+      <option name="presentableId" value="LOCAL-00001" />
+      <option name="project" value="LOCAL" />
+      <updated>1738770822203</updated>
+    </task>
+    <option name="localTasksCounter" value="2" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
     <option name="version" value="3" />
   </component>
+  <component name="VcsManagerConfiguration">
+    <MESSAGE value="Card Extraction added" />
+    <option name="LAST_COMMIT_MESSAGE" value="Card Extraction added" />
+  </component>
   <component name="com.intellij.coverage.CoverageDataManagerImpl">
-    <SUITE FILE_PATH="coverage/Card_Matching$main.coverage" NAME="main Coverage Results" MODIFIED="1738770396802" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="C:\Users\vasuv\OneDrive\Desktop\Card Matching" />
+    <SUITE FILE_PATH="coverage/Card_Matching$main.coverage" NAME="main Coverage Results" MODIFIED="1738770575813" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="C:\Users\vasuv\OneDrive\Desktop\Card Matching" />
   </component>
 </project>

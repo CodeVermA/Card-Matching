@@ -1,5 +1,6 @@
 import os
 import cv2 as cv
+import numpy
 import numpy as np
 import pytesseract
 
@@ -20,10 +21,53 @@ def _load_images(folder_path: str):
 
     return images
 
-def extract_cards(image_path):
-    output_dir = PATH + "/cards"
+
+
+def display_images_side_by_side(images, window_name="Images"):
+    # Ensure all images have the same height for proper concatenation
+    height = min(img.shape[0] for img in images)  # Find the smallest height
+    resized_images = [cv.resize(img,
+                                (int(img.shape[1] * height / img.shape[0]), height)) for img in images]
+
+    # Concatenate images horizontally
+    concatenated_image = cv.hconcat(resized_images)
+
+    # Display the image
+    cv.imshow(window_name, concatenated_image)
+    cv.waitKey(0)
+    cv.destroyAllWindows()
+
+def get_text(image:numpy.ndarray) -> str:
+    """Determines if a card contains text and returns it."""
+    gray = cv.cvtColor(image, cv.COLOR_BGR2GRAY)
+
+    # Apply thresholding to highlight text
+    _, thresh = cv.threshold(gray, 150, 255, cv.THRESH_BINARY_INV)
+
+    # Extract text using Tesseract OCR
+    text = pytesseract.image_to_string(thresh, config='--psm 6')
+    return text.strip()
+
+def is_shape_card(image):
+    """Determines if a card contains shapes using contour analysis."""
+    gray = cv.cvtColor(image, cv.COLOR_BGR2GRAY)
+
+    # Edge detection
+    edges = cv.Canny(gray, 50, 150)
+
+    # Find contours
+    contours, _ = cv.findContours(edges, cv.RETR_EXTERNAL, cv.CHAIN_APPROX_SIMPLE)
+
+    # Filter out small noise
+    shape_count = sum(1 for cnt in contours if cv.contourArea(cnt) > 500)
+
+    return shape_count > 0  # If shapes are detected, it's a shape card
+
+
+def extract_cards(image, output_dir):
+    output_dir = os.path.join(output_dir, "cards")
     # Load the image
-    image = cv.imread(image_path)
+    image = cv.imread(image)
 
     # Resize image for processing (optional, keeps aspect ratio)
     scale_percent = 50  # Resize to 50% of original
@@ -87,44 +131,31 @@ def extract_cards(image_path):
 
     return card_images
 
-def display_images_side_by_side(images, window_name="Images"):
-    # Ensure all images have the same height for proper concatenation
-    height = min(img.shape[0] for img in images)  # Find the smallest height
-    resized_images = [cv.resize(img,
-                                (int(img.shape[1] * height / img.shape[0]), height)) for img in images]
-
-    # Concatenate images horizontally
-    concatenated_image = cv.hconcat(resized_images)
-
-    # Display the image
-    cv.imshow(window_name, concatenated_image)
-    cv.waitKey(0)
-    cv.destroyAllWindows()
-
 
 class Robot:
     def __init__(self):
         self._capture = cv.VideoCapture(0)
         self._orb = cv.ORB_create()
 
-        self.images = _load_images(PATH)
-        self._img_count = len(self.images)
+        self.images = []
+        self._img_count = 0
 
         self._SIMILARITY_THRESHOLD = 0.70
 
-    def capture_image(self) -> bool:
+    def capture_image(self, save_loc:str):
         """
-        Capture the image from the camera and saves in return whether it was successful.
-        """
-        save_loc = f"images/image{self._img_count + 1}.jpg"
-        captured, img = self._capture.read()
+        Capture the image from the camera and saves.
 
+        @:param save_loc: Location to save the captured image.
+        """
+        save_loc = os.path.join(save_loc, "boardImage.jpg")
+        captured, img = self._capture.read()
         if captured:
             cv.imwrite(save_loc, img)
-            self.images.append(img)
-            self._img_count += 1
+        else:
+            raise RuntimeError("IMAGE NOT CAPTURED")
 
-        return captured
+        self.images = extract_cards(save_loc, PATH)
 
     def _feature_matching(self, img1, img2):
         """
@@ -149,17 +180,37 @@ class Robot:
 
         return similarity, matches, img1, img2, kp1, kp2
 
-    def compare(self):
-        img_to_compare = self.images[-1]
-        similar_images = []
+    def _handle_shape_cards(self, img_to_compare):
+        similar_images = [img_to_compare]
 
-        for img in self.images:
+        for img in self.images[:-1]:
             similarity = self._feature_matching(img, img_to_compare)[0]
             if round(similarity, 2) >= self._SIMILARITY_THRESHOLD:
                 similar_images.append(img)
 
-        display_images_side_by_side(similar_images)
-        return similar_images
+        if len(similar_images) > 1 : display_images_side_by_side(similar_images)
+        else: print("== NO SIMILAR IMAGES FOUND ==\n\n")
+
+        #return similar_images
+
+    def _handle_text_cards(self, text):
+        pass
+
+    def compare(self):
+        img_to_compare = self.images[-1]
+
+        if is_shape_card(img_to_compare):
+            print("== SHAPE CARDS DETECTED == \n")
+            self._handle_shape_cards(img_to_compare)
+
+        text = get_text(img_to_compare)
+        if text != '':
+            print("== TEXT CARDS DETECTED == \n")
+            self._handle_text_cards(text)
+
+        else:
+            raise RuntimeError("CARD NOT DETECTED AS SHAPE OR TEXT CARD")
+
 
     def destroy(self):
         self._capture.release()
