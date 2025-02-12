@@ -6,18 +6,52 @@ from shapecomp import ShapeComp
 from textcomp import TextComp
 import shutil
 
+def display_images_in_grid(images, max_per_row=5, border_size=10, border_color=(255, 255, 255),
+                           window_name="Image Grid"):
+    if not images:
+        print("No images to display.")
+        return
 
-def _display_images_side_by_side(images, window_name="Images"):
     # Ensure all images have the same height for proper concatenation
     height = min(img.shape[0] for img in images)  # Find the smallest height
-    resized_images = [cv.resize(img,
-                                (int(img.shape[1] * height / img.shape[0]), height)) for img in images]
+    resized_images = [cv.resize(img, (int(img.shape[1] * height / img.shape[0]), height)) for img in images]
 
-    # Concatenate images horizontally
-    concatenated_image = cv.hconcat(resized_images)
+    # Create a blank border image (same height, fixed width)
+    border = np.full((height, border_size, 3), border_color, dtype=np.uint8)
 
-    # Display the image
-    cv.imshow(window_name, concatenated_image)
+    # Split images into rows of max_per_row images
+    rows = [resized_images[i: i + max_per_row] for i in range(0, len(resized_images), max_per_row)]
+
+    # Concatenate images row-wise with borders
+    final_rows = []
+    max_width = 0  # Track the widest row
+
+    for row in rows:
+        images_with_borders = []
+        for i, img in enumerate(row):
+            images_with_borders.append(img)
+            if i < len(row) - 1:  # Add border between images, but not at the end of a row
+                images_with_borders.append(border)
+
+        # Concatenate images in the row
+        row_concat = cv.hconcat(images_with_borders)
+        final_rows.append(row_concat)
+        max_width = max(max_width, row_concat.shape[1])  # Track widest row
+
+    # Resize all rows to match the maximum width
+    final_rows = [cv.copyMakeBorder(row, 0, 0, 0, max_width - row.shape[1], cv.BORDER_CONSTANT, value=border_color)
+                  for row in final_rows]
+
+    # Create vertical border with the same width as the rows
+    v_border = np.full((border_size, max_width, 3), border_color, dtype=np.uint8)
+
+    # Concatenate rows with vertical borders
+    grid_image = final_rows[0]
+    for i in range(1, len(final_rows)):
+        grid_image = cv.vconcat([grid_image, v_border, final_rows[i]])
+
+    # Display the final image grid
+    cv.imshow(window_name, grid_image)
     cv.waitKey(0)
     cv.destroyAllWindows()
 
@@ -32,7 +66,7 @@ class Robot:
         self.text_comp = None
 
     def reset(self):
-        shutil.rmtree(self.cards_path + "/cards")
+        if os.path.isdir(self.cards_path + "/cards"): shutil.rmtree(self.cards_path + "/cards")
         self.shape_comp = None
         self.text_comp = None
 
@@ -52,35 +86,66 @@ class Robot:
         cards_names = self.extract_cards(self.cards_path)
         cards_imgs = Robot.load_images(self.cards_path + "/cards")
 
+        display_images_in_grid(cards_imgs)
+
+        if len(cards_imgs) == 0:
+            print("== NO CARDS FOUND ==")
+            print("== NO COMPARISON TYPE SETUP. PLEASE CAPTURE THE IMAGE AGAIN ==\n")
+            return
+
         if ShapeComp.has_shape(cards_imgs[0]):
             self.shape_comp = ShapeComp(cards_imgs)
-
+            print("== SHAPE COMPARISON SETUP ==\n")
         else:
             self.text_comp = TextComp(cards_imgs)
+            print("== TEXT COMPARISON SETUP ==\n")
 
     def capture_image(self):
         """
         Capture the image from the camera and saves.
         """
-        captured, img = self._capture.read()
-        if captured:
-            self.img = img
-        else:
-            raise RuntimeError("IMAGE NOT CAPTURED")
+        captured = False
+        while not captured:
+            ret, frame = self._capture.read()
+            if not ret:
+                raise Exception("== FAILED TO CAPTURE IMAGE ==\n")
+
+            cv.imshow("Press 'Space' to Capture, 'Esc' to Exit", frame)
+            key = cv.waitKey(1) & 0xFF
+
+            if key == ord(' '):  # Spacebar
+                self.img = frame
+                captured = True
+
+            elif key == 27:  # Escape key
+                self._capture.release()
+                cv.destroyAllWindows()
+                captured = True
+
+        if captured: self.setup_comp_type()
+
+    def load_board(self, image_path):
+        """
+        Capture the image from the camera and saves.
+        """
+        try:
+            self.img = cv.imread(image_path)
+
+        except Exception as e:
+            print("== FAILED TO LOAD IMAGE ==")
 
         self.setup_comp_type()
 
     def extract_cards(self, output_dir):
         output_dir = os.path.join(output_dir, "cards")
         # Load the image
-        image = cv.imread(self.img)
 
         # Resize image for processing (optional, keeps aspect ratio)
         scale_percent = 50  # Resize to 50% of original
-        width = int(image.shape[1] * scale_percent / 100)
-        height = int(image.shape[0] * scale_percent / 100)
+        width = int(self.img.shape[1] * scale_percent / 100)
+        height = int(self.img.shape[0] * scale_percent / 100)
         dim = (width, height)
-        resized_image = cv.resize(image, dim, interpolation=cv.INTER_AREA)
+        resized_image = cv.resize(self.img, dim, interpolation=cv.INTER_AREA)
 
         # Convert to grayscale
         gray = cv.cvtColor(resized_image, cv.COLOR_BGR2GRAY)

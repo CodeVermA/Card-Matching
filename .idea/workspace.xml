@@ -4,9 +4,7 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="5eb23c6e-3d02-4844-ba81-f8fb5e81205b" name="Changes" comment="Card Extraction added">
-      <change afterPath="$PROJECT_DIR$/src/shapecomp.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/textcomp.py" afterDir="false" />
+    <list default="true" id="5eb23c6e-3d02-4844-ba81-f8fb5e81205b" name="Changes" comment="Proper Structure created">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/resources/cards/card_1.jpg" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/resources/cards/card_10.jpg" beforeDir="false" />
@@ -31,6 +29,7 @@
       <change beforePath="$PROJECT_DIR$/resources/textcards.jpg" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/main.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/robot.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/robot.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/textcomp.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/textcomp.py" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -60,7 +59,7 @@
   }
 }</component>
   <component name="ProjectColorInfo">{
-  &quot;associatedIndex&quot;: 0
+  &quot;associatedIndex&quot;: 1
 }</component>
   <component name="ProjectId" id="2sXPecDqBAMNw8cqFYhP1xi6E6x" />
   <component name="ProjectLevelVcsManager" settingsEditedManually="true" />
@@ -71,10 +70,11 @@
   <component name="PropertiesComponent">{
   &quot;keyToString&quot;: {
     &quot;Python.main.executor&quot;: &quot;Run&quot;,
+    &quot;Python.new.executor&quot;: &quot;Run&quot;,
     &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
     &quot;git-widget-placeholder&quot;: &quot;master&quot;,
     &quot;ignore.virus.scanning.warn.message&quot;: &quot;true&quot;,
-    &quot;last_opened_file_path&quot;: &quot;C:/Users/vasuv/OneDrive/Desktop/Card Matching&quot;,
+    &quot;last_opened_file_path&quot;: &quot;C:/Users/vasuv/OneDrive/Desktop/Card Matching/src/main.py&quot;,
     &quot;node.js.detected.package.eslint&quot;: &quot;true&quot;,
     &quot;node.js.detected.package.tslint&quot;: &quot;true&quot;,
     &quot;node.js.selected.package.eslint&quot;: &quot;(autodetect)&quot;,
@@ -98,8 +98,8 @@
         <env name="PYTHONUNBUFFERED" value="1" />
       </envs>
       <option name="SDK_HOME" value="" />
-      <option name="SDK_NAME" value="Python 3.12 (Card Matching)" />
-      <option name="WORKING_DIRECTORY" value="C:\Users\vasuv\OneDrive\Desktop\Card Matching" />
+      <option name="SDK_NAME" value="Python 3.12" />
+      <option name="WORKING_DIRECTORY" value="" />
       <option name="IS_MODULE_SDK" value="false" />
       <option name="ADD_CONTENT_ROOTS" value="true" />
       <option name="ADD_SOURCE_ROOTS" value="true" />
@@ -117,8 +117,8 @@
   <component name="SharedIndexes">
     <attachedChunks>
       <set>
-        <option value="bundled-js-predefined-d6986cc7102b-5c90d61e3bab-JavaScript-PY-242.23726.102" />
-        <option value="bundled-python-sdk-5e1850174b45-399fe30bd8c1-com.jetbrains.pycharm.pro.sharedIndexes.bundled-PY-242.23726.102" />
+        <option value="bundled-js-predefined-d6986cc7102b-5c90d61e3bab-JavaScript-PY-242.24807.21" />
+        <option value="bundled-python-sdk-00717045f1d3-399fe30bd8c1-com.jetbrains.pycharm.pro.sharedIndexes.bundled-PY-242.24807.21" />
       </set>
     </attachedChunks>
   </component>
@@ -133,7 +133,12 @@
       <workItem from="1738599052105" duration="356000" />
       <workItem from="1738768882987" duration="4775000" />
       <workItem from="1738849376451" duration="1707000" />
-      <workItem from="1738939218967" duration="6246000" />
+      <workItem from="1738939218967" duration="9889000" />
+      <workItem from="1739193334231" duration="1377000" />
+      <workItem from="1739212324250" duration="4404000" />
+      <workItem from="1739221356984" duration="119000" />
+      <workItem from="1739221856126" duration="425000" />
+      <workItem from="1739353174540" duration="2648000" />
     </task>
     <task id="LOCAL-00001" summary="Card Extraction added">
       <option name="closed" value="true" />
@@ -151,7 +156,15 @@
       <option name="project" value="LOCAL" />
       <updated>1738850724529</updated>
     </task>
-    <option name="localTasksCounter" value="3" />
+    <task id="LOCAL-00003" summary="Proper Structure created">
+      <option name="closed" value="true" />
+      <created>1738945662775</created>
+      <option name="number" value="00003" />
+      <option name="presentableId" value="LOCAL-00003" />
+      <option name="project" value="LOCAL" />
+      <updated>1738945662775</updated>
+    </task>
+    <option name="localTasksCounter" value="4" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -159,9 +172,11 @@
   </component>
   <component name="VcsManagerConfiguration">
     <MESSAGE value="Card Extraction added" />
-    <option name="LAST_COMMIT_MESSAGE" value="Card Extraction added" />
+    <MESSAGE value="Proper Structure created" />
+    <option name="LAST_COMMIT_MESSAGE" value="Proper Structure created" />
   </component>
   <component name="com.intellij.coverage.CoverageDataManagerImpl">
-    <SUITE FILE_PATH="coverage/Card_Matching$main.coverage" NAME="main Coverage Results" MODIFIED="1738943397445" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="C:\Users\vasuv\OneDrive\Desktop\Card Matching" />
+    <SUITE FILE_PATH="coverage/Card_Matching$main.coverage" NAME="main Coverage Results" MODIFIED="1739356654204" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="" />
+    <SUITE FILE_PATH="coverage/Card_Matching$new.coverage" NAME="new Coverage Results" MODIFIED="1739221242950" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/src" />
   </component>
 </project>
